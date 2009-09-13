@@ -1,6 +1,24 @@
 // All credit goes to Rick Olson.
 (function($) {
-  $.fn.relatizeDate = function() {
+  $.fn.relatizeDate = function(params) {
+    if(typeof $.relatizeDate.language == "undefined")
+      if(typeof params == "undefined")
+        for(key in $relatizeDateTranslation)
+          var language = key;
+      else if(typeof params.availableLanguages == "object") {
+        var currentLanguage = (typeof navigator.browserLanguage == "undefined") ? 
+          navigator.language : navigator.browserLanguage;
+        currentLanguage.toLowerCase().match(/((\w+)-\w+)/);
+        if($relatizeDateTranslation[RegExp.$1])
+          var language = RegExp.$1;
+        else if(RegExp.$1 != RegExp.$2 && $relatizeDateTranslation[RegExp.$2])
+          var language = RegExp.$2;
+        else
+          var language = params.defaultLanguage;
+      } else
+        var language = params.defaultLanguage;
+    
+    $.relatizeDate.translation = $relatizeDateTranslation[language];
     return $(this).each(function() {
       $(this).text($.relatizeDate(this));
     });
@@ -64,18 +82,19 @@
      */
     distanceOfTimeInWords: function(fromTime, toTime, includeTime) {
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000, 10);
+      var translation = $.relatizeDate.translation;
       if (delta < 60) {
-          return 'less than a minute ago';
+          return translation[0];
       } else if (delta < 120) {
-          return 'about a minute ago';
+          return translation[1];
       } else if (delta < (45*60)) {
-          return (parseInt(delta / 60, 10)).toString() + ' minutes ago';
+          return translation[2].replace("%d", parseInt(delta / 60, 10));
       } else if (delta < (120*60)) {
-          return 'about an hour ago';
+          return translation[3];
       } else if (delta < (24*60*60)) {
-          return 'about ' + (parseInt(delta / 3600, 10)).toString() + ' hours ago';
+          return translation[4].replace("%d", parseInt(delta / 3600, 10));
       } else if (delta < (48*60*60)) {
-          return '1 day ago';
+          return translation[5];
       } else {
         var days = (parseInt(delta / 86400, 10)).toString();
         if (days > 5) {
@@ -83,7 +102,7 @@
           if (includeTime) fmt += ' %I:%M %p';
           return $.relatizeDate.strftime(fromTime, fmt);
         } else
-          return days + " days ago";
+          return translation[6].replace("%d", days);
       }
     }
   });
