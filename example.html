@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title>Relatize Date exemple</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.relatize_date.fr.js"></script>
+    <script type="text/javascript" src="jquery.relatize_date.en.js"></script>
+    <script type="text/javascript" src="jquery.relatize_date.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          $("#first").relatizeDate();
+          $("#second").relatizeDate({defaultLanguage:"fr"});
+        });
+    </script>
+  </head>
+  <body>
+    <code>$("#first").relatizeDate();</code><br />
+    <code>Sun Sep 13 04:48:33 -0700 2009</code> =>
+    <abbr id="first" title="2009-09-13 04:48:33">Sun Sep 13 04:48:33 -0700 2009</abbr>
+    <br /><br />
+    <code>$("#second").relatizeDate({defaultLanguage:"fr"});</code><br />
+    <code>Sun Sep 13 04:48:33 -0700 2009</code> =>
+    <abbr id="second" title="2009-09-13 04:48:33">Sun Sep 13 04:48:33 -0700 2009</abbr>
+  </body>
+</html>
