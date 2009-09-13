@@ -10,9 +10,6 @@
     return $.relatizeDate.timeAgoInWords(new Date($(element).text()));
   };
 
-  // shortcut
-  $r = $.relatizeDate;
-
   $.extend($.relatizeDate, {
     shortDays: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -35,10 +32,10 @@
 
       return format.replace(/\%([aAbBcdHImMpSwyY])/g, function(part) {
         switch(part[1]) {
-          case 'a': return $r.shortDays[day]; break;
-          case 'A': return $r.days[day]; break;
-          case 'b': return $r.shortMonths[month]; break;
-          case 'B': return $r.months[month]; break;
+          case 'a': return $.relatizeDate.shortDays[day]; break;
+          case 'A': return $.relatizeDate.days[day]; break;
+          case 'b': return $.relatizeDate.shortMonths[month]; break;
+          case 'B': return $.relatizeDate.months[month]; break;
           case 'c': return date.toString(); break;
           case 'd': return pad(date.getDate()); break;
           case 'H': return pad(hours); break;
@@ -55,7 +52,7 @@
     },
   
     timeAgoInWords: function(targetDate, includeTime) {
-      return $r.distanceOfTimeInWords(targetDate, new Date(), includeTime);
+      return $.relatizeDate.distanceOfTimeInWords(targetDate, new Date(), includeTime);
     },
   
     /**
@@ -84,7 +81,7 @@
         if (days > 5) {
           var fmt  = '%B %d, %Y';
           if (includeTime) fmt += ' %I:%M %p';
-          return $r.strftime(fromTime, fmt);
+          return $.relatizeDate.strftime(fromTime, fmt);
         } else
           return days + " days ago";
       }
