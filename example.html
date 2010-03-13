@@ -11,24 +11,18 @@
     <script type="text/javascript" src="jquery.relatize_date.en.js"></script>
     <script type="text/javascript" src="jquery.relatize_date.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-          $("#first").relatizeDate();
-          $("#second").relatizeDate({defaultLanguage:"fr"});
-          $("#third").relatizeDate({defaultLanguage:"ru"});
+        $(window).load(function(){
+	var langs = ['en', 'fr', 'ru'],
+	timestamp = 'Sat Mar 13 16:16:16 +0300 2010';
+	
+	for(var lang in langs) {
+		l = langs[lang];
+		$('body').append('<div><code>$("time_'+l+'").relatizeDate({defaultLanguage: "'+l+'"});</code><p><span>'+timestamp+'</span> => <span id="time_'+l+'">'+timestamp+'</span></p></div>');
+		$('#time_'+l).relatizeDate({defaultLanguage: l});
+	}
         });
     </script>
   </head>
   <body>
-    <code>$("#first").relatizeDate();</code><br />
-    <code>Sun Sep 13 04:48:33 -0700 2009</code> =>
-    <abbr id="first" title="2009-09-13 04:48:33">Sun Sep 13 04:48:33 -0700 2009</abbr>
-    <br /><br />
-    <code>$("#second").relatizeDate({defaultLanguage:"fr"});</code><br />
-    <code>Sun Sep 13 04:48:33 -0700 2009</code> =>
-    <abbr id="second" title="2009-09-13 04:48:33">Sun Sep 13 04:48:33 -0700 2009</abbr>
-    <br /><br />
-    <code>$("#third").relatizeDate({defaultLanguage:"ru"});</code><br />
-    <code>Sun Sep 13 04:48:33 -0700 2009</code> =>
-    <abbr id="third" title="2009-09-13 04:48:33">Sun Sep 13 04:48:33 -0700 2009</abbr>
   </body>
 </html>
