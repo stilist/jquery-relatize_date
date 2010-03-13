@@ -1,7 +1,7 @@
 if(typeof $relatizeDateTranslation == "undefined") 
   $relatizeDateTranslation = {};
 
-$relatizeDateTranslation.en = [
+$relatizeDateTranslation.ru = [
   "меньше минуты назад",
   "около минуты назад",
   "%d минут(ы) назад",
