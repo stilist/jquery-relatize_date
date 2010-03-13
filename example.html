@@ -17,12 +17,18 @@
 	
 	for(var lang in langs) {
 		l = langs[lang];
-		$('body').append('<div><code>$("time_'+l+'").relatizeDate({defaultLanguage: "'+l+'"});</code><p><span>'+timestamp+'</span> => <span id="time_'+l+'">'+timestamp+'</span></p></div>');
+		$('body').append('<div class="lang"><code>$("time_'+l+'").relatizeDate({defaultLanguage: "'+l+'"});</code><p><span>'+timestamp+'</span> => <span id="time_'+l+'">'+timestamp+'</span></p></div>');
 		$('#time_'+l).relatizeDate({defaultLanguage: l});
 	}
         });
     </script>
+    <style>
+    h1 { font: 1.5em Helvetica, sans-serif; }
+    .lang { border-bottom: 1px dashed black; background: #efe; margin-bottom: 0.5em; }
+    code { font: 1em Monaco, "Droid Sans Mono", monospace; }
+    </style>
   </head>
   <body>
+    <h1>jQuery.relatizeDate()</h1>
   </body>
 </html>
