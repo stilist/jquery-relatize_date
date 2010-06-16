@@ -1,4 +1,4 @@
-// All credit goes to Rick Olson.
+// Almost all credit goes to Rick Olson.
 (function($) {
   $.fn.relatizeDate = function(params) {
     if(typeof $.relatizeDate.language == "undefined")
@@ -84,17 +84,17 @@
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000, 10);
       var translation = $.relatizeDate.translation;
       if (delta < 60) {
-          return translation[0];
+          return translation.ltm; // (L)ess (T)han a (M)inute
       } else if (delta < 120) {
-          return translation[1];
+          return translation.abm; // (AB)out a (M)inute
       } else if (delta < (45*60)) {
-          return translation[2].replace("%d", parseInt(delta / 60, 10));
+          return translation.m.replace("%d", parseInt(delta / 60, 10)); // (M)inute
       } else if (delta < (120*60)) {
-          return translation[3];
+          return translation.h; // (H)our
       } else if (delta < (24*60*60)) {
-          return translation[4].replace("%d", parseInt(delta / 3600, 10));
+          return translation.abh.replace("%d", parseInt(delta / 3600, 10)); // (AB)out a (H)our
       } else if (delta < (48*60*60)) {
-          return translation[5];
+          return translation.d; // (D)ay
       } else {
         var days = (parseInt(delta / 86400, 10)).toString();
         if (days > 5) {
@@ -102,7 +102,7 @@
           if (includeTime) fmt += ' %I:%M %p';
           return $.relatizeDate.strftime(fromTime, fmt);
         } else
-          return translation[6].replace("%d", days);
+          return translation.ds.replace("%d", days); // (D)ay(S)
       }
     }
   });

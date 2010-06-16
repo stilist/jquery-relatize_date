@@ -1,12 +1,12 @@
 if(typeof $relatizeDateTranslation == "undefined") 
   $relatizeDateTranslation = {};
 
-$relatizeDateTranslation.ru = [
-  "меньше минуты назад",
-  "около минуты назад",
-  "%d минут(ы) назад",
-  "около часа назад",
-  "около %d часов назад",
-  "1 день назад",
-  "%d дней назад"
-];
+$relatizeDateTranslation.ru = {  
+  ltm: "меньше минуты назад",
+  abm: "около минуты назад",
+  m: "%d минут(ы) назад",
+  h: "около часа назад",
+  abh: "около %d часов назад",
+  d: "1 день назад",
+  ds: "%d дней назад"
+};

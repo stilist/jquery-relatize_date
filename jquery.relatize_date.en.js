@@ -1,12 +1,12 @@
 if(typeof $relatizeDateTranslation == "undefined") 
   $relatizeDateTranslation = {};
 
-$relatizeDateTranslation.en = [
-  "less than a minute ago",
-  "about a minute ago",
-  "%d minutes ago",
-  "about an hour ago",
-  "about %d hours ago",
-  "1 day ago",
-  "%d days ago"
-];
+$relatizeDateTranslation.en = {
+  ltm: "less than a minute ago",
+  abm: "about a minute ago",
+  m: "%d minutes ago",
+  h: "about an hour ago",
+  abh: "about %d hours ago",
+  d: "one day ago",
+  ds: "%d days ago"
+};
