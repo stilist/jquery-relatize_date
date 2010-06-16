@@ -29,31 +29,27 @@
   };
 
   $.extend($.relatizeDate, {
-    shortDays: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    shortMonths: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-    months: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-
     /**
      * Given a formatted string, replace the necessary items and return.
      * Example: Time.now().strftime("%B %d, %Y") => February 11, 2008
      * @param {String} format The formatted string used to format the results
      */
     strftime: function(date, format) {
-      var day = date.getDay(), month = date.getMonth();
-      var hours = date.getHours(), minutes = date.getMinutes();
+      var day = date.getDay(), month = date.getMonth(),
+      hours = date.getHours(), minutes = date.getMinutes(),
+      translation = $.relatizeDate.translation;
 
-      var pad = function(num) { 
+      function pad(num) { 
         var string = num.toString(10);
         return new Array((2 - string.length) + 1).join('0') + string;
       };
 
       return format.replace(/\%([aAbBcdHImMpSwyY])/g, function(part) {
         switch(part[1]) {
-          case 'a': return $.relatizeDate.shortDays[day]; break;
-          case 'A': return $.relatizeDate.days[day]; break;
-          case 'b': return $.relatizeDate.shortMonths[month]; break;
-          case 'B': return $.relatizeDate.months[month]; break;
+          case 'a': return translation.shortDays[day]; break;
+          case 'A': return translation.days[day]; break;
+          case 'b': return translation.shortMonths[month]; break;
+          case 'B': return translation.months[month]; break;
           case 'c': return date.toString(); break;
           case 'd': return pad(date.getDate()); break;
           case 'H': return pad(hours); break;
