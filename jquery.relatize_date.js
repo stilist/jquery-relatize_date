@@ -98,7 +98,10 @@
           if (includeTime) fmt += ' %I:%M %p';
           return $.relatizeDate.strftime(fromTime, fmt);
         } else
-          return translation.ds.replace("%d", days); // (D)ay(S)
+          if (typeof(translation.shortds) != 'undefined' &&
+	      typeof(translation.shortds[days-1]) != 'undefined')
+	      return translation.shortds[days-1]; // less than 5 days
+          else return translation.ds.replace("%d", days); // (D)ay(S)
       }
     }
   });

@@ -1,6 +1,7 @@
 if(typeof $relatizeDateTranslation == "undefined") 
   $relatizeDateTranslation = {};
 
+var _da = ' days ago';
 $relatizeDateTranslation.en = {
   shortDays: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
   days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -11,6 +12,7 @@ $relatizeDateTranslation.en = {
   m: "%d minutes ago",
   h: "about an hour ago",
   abh: "about %d hours ago",
-  d: "one day ago",
-  ds: "%d days ago"
+  d: "a day ago",
+  ds: "%d"+_da,
+  shortds: ['two'+_da, 'three'+_da, 'four'+_da, 'five'+_da]
 };
