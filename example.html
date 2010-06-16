@@ -20,7 +20,7 @@
 	for(var lang in langs) {
 		l = langs[lang], t = dates[timestamp];
 		$('body').append('<div class="lang t'+(+timestamp+1)+'"><code>$("#time_'+c+'_'+l+'").relatizeDate({defaultLanguage: "'+l+'"});</code><p><span>'+t+'</span> => <span id="time_'+c+'_'+l+'">'+t+'</span></p></div>');
-		$('#time_'+c+'_'+l).relatizeDate({defaultLanguage: l});
+		$('#time_'+c+'_'+l).relatizeDate({defaultLanguage: l, titleize: true});
 	}
 	c+=1;
 	}

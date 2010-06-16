@@ -20,6 +20,8 @@
     
     $.relatizeDate.translation = $relatizeDateTranslation[language];
     return $(this).each(function() {
+      if (typeof params.titleize != "undefined" && params.titleize == true)
+	  $(this).attr('title', $.relatizeDate.strftime(new Date($(this).text()), '%B %d, %Y %I:%M %p'));
       $(this).text($.relatizeDate(this));
     });
   };
