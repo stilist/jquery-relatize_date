@@ -12,7 +12,7 @@ $relatizeDateTranslation.en = {
   m: "%d minutes ago",
   h: "about an hour ago",
   abh: "about %d hours ago",
-  d: "a day ago",
+  d: "yesterday",
   ds: "%d"+_da,
   shortds: ['two'+_da, 'three'+_da, 'four'+_da, 'five'+_da]
 };
