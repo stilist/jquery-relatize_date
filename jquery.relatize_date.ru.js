@@ -3,6 +3,7 @@ if(typeof $relatizeDateTranslation == "undefined")
 
 var _da = ' дня назад';
 $relatizeDateTranslation.ru = {
+  default_date_fmt: '%B %d, %Y %H:%M',
   shortDays: [ 'Вос', 'Пон', 'Вт', 'Срд', 'Чтв', 'Птн', 'Сбт' ],
   days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
   shortMonths: [ 'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек' ],
@@ -13,6 +14,7 @@ $relatizeDateTranslation.ru = {
   h: "около часа назад",
   abh: "около %d часов назад",
   d: "вчера",
+  at: "в",
   ds: "%d дней назад",
   shortds: ['два'+_da, 'три'+_da, 'четыре'+_da]
 };

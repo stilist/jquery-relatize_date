@@ -19,9 +19,11 @@
         var language = params.defaultLanguage;
     
     $.relatizeDate.translation = $relatizeDateTranslation[language];
+    if (typeof $.relatizeDate.translation.default_date_fmt != "undefined") dfmt = $.relatizeDate.translation.default_date_fmt;
+    else dfmt = '%B %d, %Y %I:%M %p';
     return $(this).each(function() {
       if (typeof params.titleize != "undefined" && params.titleize == true)
-	  $(this).attr('title', $.relatizeDate.strftime(new Date($(this).text()), '%B %d, %Y %I:%M %p'));
+	  $(this).attr('title', $.relatizeDate.strftime(new Date($(this).text()), dfmt));
       $(this).text($.relatizeDate(this));
     });
   };
@@ -92,7 +94,9 @@
       } else if (delta < (24*60*60)) {
           return translation.abh.replace("%d", parseInt(delta / 3600, 10)); // (AB)out a (H)our
       } else if (delta < (48*60*60)) {
-          return translation.d; // (D)ay
+        if (typeof translation.default_time_fmt != 'undefined' && translation.default_time_fmt == 12) time = (fromTime.getHours() + 12) % 12 + ':' + fromTime.getMinutes() + ' ' + (fromTime.getHours() > 12 ? 'PM' : 'AM');
+        else time = fromTime.getHours() + ':' + fromTime.getMinutes();
+          return translation.d + ' ' + translation.at + ' ' + time; // yester(D)ay
       } else {
         var days = (parseInt(delta / 86400, 10)).toString();
         if (days > 5) {
@@ -101,8 +105,8 @@
           return $.relatizeDate.strftime(fromTime, fmt);
         } else
           if (typeof(translation.shortds) != 'undefined' &&
-	      typeof(translation.shortds[days-1]) != 'undefined')
-	      return translation.shortds[days-1]; // less than 5 days
+	      typeof(translation.shortds[days-2]) != 'undefined')
+	      return translation.shortds[days-2]; // less than 5 days
           else return translation.ds.replace("%d", days); // (D)ay(S)
       }
     }

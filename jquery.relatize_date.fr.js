@@ -12,5 +12,6 @@ $relatizeDateTranslation.fr = { /* TODO: Translate */
   h: 'il y a environ une heure',
   abh: 'il y a environ %d heures',
   d: 'il y a 1 jour',
-  ds: 'il y a %d jours'
+  ds: 'il y a %d jours',
+  at: '@' // FIXME: FIX ME.
 };
