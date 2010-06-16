@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>Relatize Date example</title>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="jquery.relatize_date.ru.js"></script>
     <script type="text/javascript" src="jquery.relatize_date.fr.js"></script>
     <script type="text/javascript" src="jquery.relatize_date.en.js"></script>
@@ -13,18 +13,26 @@
     <script type="text/javascript">
         $(window).load(function(){
 	var langs = ['en', 'fr', 'ru'],
-	timestamp = 'Sat Mar 13 16:16:16 +0300 2010';
-	
+	d = new Date(), c = 1,
+	dates = [new Date(), new Date(d.setHours(d.getHours()-1)), new Date(d.setDate(d.getDate()-2)), "Wed Jun 15 2009 21:12:21 GMT+0400 (MSD)"];
+
+	for(var timestamp in dates) {
 	for(var lang in langs) {
-		l = langs[lang];
-		$('body').append('<div class="lang"><code>$("time_'+l+'").relatizeDate({defaultLanguage: "'+l+'"});</code><p><span>'+timestamp+'</span> => <span id="time_'+l+'">'+timestamp+'</span></p></div>');
-		$('#time_'+l).relatizeDate({defaultLanguage: l});
+		l = langs[lang], t = dates[timestamp];
+		$('body').append('<div class="lang t'+(+timestamp+1)+'"><code>$("#time_'+c+'_'+l+'").relatizeDate({defaultLanguage: "'+l+'"});</code><p><span>'+t+'</span> => <span id="time_'+c+'_'+l+'">'+t+'</span></p></div>');
+		$('#time_'+c+'_'+l).relatizeDate({defaultLanguage: l});
+	}
+	c+=1;
 	}
         });
     </script>
     <style>
     h1 { font: 1.5em Helvetica, sans-serif; }
-    .lang { border-bottom: 1px dashed black; background: #efe; margin-bottom: 0.5em; }
+    .lang { border-bottom: 1px dashed black; margin: 1em; float: left; }
+    .t1 { background: #fee; }
+    .t2 { background: #efe; }
+    .t3 { background: #eef; }
+    .t4 { background: #ffe; }
     code { font: 1em Monaco, "Droid Sans Mono", monospace; }
     </style>
   </head>
