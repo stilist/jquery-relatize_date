@@ -1,11 +1,12 @@
 if(typeof $relatizeDateTranslation == "undefined")
   $relatizeDateTranslation = {};
 
-$relatizeDateTranslation.fr = { /* TODO: Translate */
-  shortDays: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-  days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  shortMonths: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-  months: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+$relatizeDateTranslation.fr = {
+  default_date_fmt: '%B %d, %Y %H:%M',
+  shortDays: [ 'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam' ],
+  days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+  shortMonths: [ 'Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec' ],
+  months: [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre' ],
   ltm: 'il y a moins d\'une minute',
   abm: 'il y a environ une minute',
   m: 'il y a %d minutes',
@@ -13,5 +14,5 @@ $relatizeDateTranslation.fr = { /* TODO: Translate */
   abh: 'il y a environ %d heures',
   d: 'il y a 1 jour',
   ds: 'il y a %d jours',
-  at: '@' // FIXME: FIX ME.
+  at: 'à'
 };
