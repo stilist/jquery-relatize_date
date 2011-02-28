@@ -13,6 +13,7 @@ if (!Date.prototype.distanceOfTimeInWords) {
 				hour = minute * 60,
 				day = hour * 24,
 				n_days = 0,
+				n_hours = 0,
 				delta = 0,
 				date = "",
 				time = "",
@@ -33,17 +34,19 @@ if (!Date.prototype.distanceOfTimeInWords) {
 			} else if ((45 * minute) > delta) {
 				date = translation.m.replace("%d",
 						parseInt((delta / minute), 10));
-			// 1-2 Hours
+			// 1 Hour
 			} else if ((hour * 2) > delta) {
 				date = translation.h;
 			// ABout n Hours (2-23 hours)
 			} else if ((24 * hour) > delta) {
-				date = translation.abh.replace("%d", parseInt(hour, 10));
+				date = translation.abh.replace("%d", parseInt((delta / hour), 10));
 			// 1-2 days
 			} else if ((48 * hour) > delta) {
 				// 12-hour clock
 				if (12 === translation.default_time_fmt) {
-					time = (start.getHours() + 12) % 12 + ":" +
+					n_hours = start.getHours() % 12;
+
+					time = (0 === n_hours ? 12 : n_hours) + ":" +
 							start.getMinutes().pad("0", 2) + " " +
 							(start.getHours() > 12 ? "PM" : "AM");
 				// 24-hour clock
@@ -61,7 +64,7 @@ if (!Date.prototype.distanceOfTimeInWords) {
 					format = "%B %d, %Y";
 
 					if (includeTime) {
-						format += " %I:%M %p";
+						format += " " + translation.at + " %I:%M %p";
 					}
 
 					date = start.strftime(format, translation);
@@ -109,7 +112,7 @@ if (!Date.prototype.strftime) {
 					case "c": return date.toString();
 					case "d": return date.getDate().pad("0", 2);
 					case "H": return hours.pad("0", 2);
-					case "I": return ((hours + 12) % 12).pad("0", 2);
+					case "I": return (hours + 12) % 12;
 					case "m": return (month + 1).pad("0", 2);
 					case "M": return minutes.pad("0", 2);
 					case "p": return hours > 12 ? "PM" : "AM";
@@ -140,4 +143,14 @@ if (!Date.prototype.timeAgoInWords) {
 			return this.distanceOfTimeInWords(new Date(), includeTime, translation);
 		}
 	};
+}
+
+if (!Date.prototype.unixTimestamp) {
+	Date.prototype.unixTimestamp = function () {
+		if (Date !== this.constructor) {
+			throw new TypeError();
+		} else {
+			return Math.round(this.getTime() / 1000);
+		}
+	}
 }

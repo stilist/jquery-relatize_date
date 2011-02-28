@@ -5,11 +5,16 @@
 		//   `defaultLanguage`: String; locale name (e.g. `"sv-SV"`, `"ru"`); used
 		//      if we're unable to determine user's preferred locale or there's no
 		//      translation for the preferred locale
+		//   `fromTitle`: Boolean; whether to generate relative time from title of
+		//      `$(this)` or from its text (default)
+		//   `includeTime`: Boolean; whether to include time for dates 5+ days ago
 		//   `language`: String; forcibly set which locale to use
 		//   `titleize`: Boolean; whether to set `title` attribute of `$(this)` to
 		//      original timestamp text in `$(this)`
 		var settings = $.extend({
 					defaultLanguage: "",
+					fromTitle: false,
+					includeTime: false,
 					language: "",
 					titleize: false
 				}, options),
@@ -52,7 +57,13 @@
 		}
 
 		return this.each(function () {
-			var date = new Date($(this).text());
+			var date;
+
+			if (settings.fromTitle) {
+				date = new Date($(this).attr("title"));
+			} else {
+				date = new Date($(this).text());
+			}
 
 			// If the date or translation is invalid, leave the text as-is.
 			if (date.isValid() && "undefined" !== typeof translation) {
@@ -61,7 +72,7 @@
 				}
 
 				$(this).data("timestamp", $(this).text()).
-						text(date.timeAgoInWords(false, translation));
+						text(date.timeAgoInWords(settings.includeTime, translation));
 			}
 		});
 	};
