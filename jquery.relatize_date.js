@@ -2,13 +2,15 @@
 (function ($) {
 	$.fn.relatizeDate = function (options) {
 		// Options:
-		//   `defaultLanguage`: locale name (e.g. `"sv-SV"`, `"ru"`); used if
-		//      we're unable to determine user's preferred locale or there's no
+		//   `defaultLanguage`: String; locale name (e.g. `"sv-SV"`, `"ru"`); used
+		//      if we're unable to determine user's preferred locale or there's no
 		//      translation for the preferred locale
-		//   `titleize`: boolean; whether to set `title` attribute of `$(this)` to
+		//   `language`: String; forcibly set which locale to use
+		//   `titleize`: Boolean; whether to set `title` attribute of `$(this)` to
 		//      original timestamp text in `$(this)`
 		var settings = $.extend({
 					defaultLanguage: "",
+					language: "",
 					titleize: false
 				}, options),
 				format = "",
@@ -17,14 +19,18 @@
 				preferred_locales = [],
 				translation = {};
 
-		if ("undefined" === typeof navigator.browserLanguage) {
+		if ("string" === typeof settings.language && "" !== settings.language) {
+			preferred_language = settings.language;
+		} else if ("undefined" === typeof navigator.browserLanguage) {
 			preferred_language = navigator.language;
 		} else {
 			preferred_language = navigator.browserLanguage;
 		}
+
 		// `"en-us"` => `["en_us", "en", "-us"]`
 		// `"en"` => `["en", "en", undefined]`
-		preferred_locales = preferred_language.toLowerCase().match(/(\w+)(\-\w+)/);
+		preferred_locales = preferred_language.toLowerCase().
+				match(/(\w+)(\-\w+)?/);
 
 		// e.g. `"fr-fr"`
 		if ($relatizeDateTranslation[preferred_locales[0]]) {
@@ -54,7 +60,8 @@
 					$(this).attr("title", date.strftime(format, translation));
 				}
 
-				$(this).text(date.timeAgoInWords(false, translation));
+				$(this).data("timestamp", $(this).text()).
+						text(date.timeAgoInWords(false, translation));
 			}
 		});
 	};
