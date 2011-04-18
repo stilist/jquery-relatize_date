@@ -129,7 +129,6 @@ if (!Date.prototype.strftime) {
 						} else {
 							return (hours + 12) % 12;
 						}
-						break;
 					// month, 01-12
 					case "m": return (month + 1).pad("0", 2);
 					// minutes, 00-59
