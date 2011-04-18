@@ -120,6 +120,8 @@ if (!Date.prototype.strftime) {
 					case "d": return date.getDate().pad("0", 2);
 					// day of month,  1-31 (leading space)
 					case "e": return date.getDate().pad(" ", 2);
+					// l10n abbreviated month name
+					case "h": return translation.shortMonths[month];
 					// 24-hour, 00-23
 					case "H": return hours.pad("0", 2);
 					// 12-hour, 01-12
