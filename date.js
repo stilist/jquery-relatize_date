@@ -112,7 +112,13 @@ if (!Date.prototype.strftime) {
 					case "c": return date.toString();
 					case "d": return date.getDate().pad("0", 2);
 					case "H": return hours.pad("0", 2);
-					case "I": return (hours + 12) % 12;
+					case "I":
+						if (0 === (hours + 12) % 12) {
+							return 12;
+						} else {
+							return (hours + 12) % 12;
+						}
+						break;
 					case "m": return (month + 1).pad("0", 2);
 					case "M": return minutes.pad("0", 2);
 					case "p": return hours > 12 ? "PM" : "AM";
