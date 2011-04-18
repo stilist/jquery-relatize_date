@@ -103,15 +103,24 @@ if (!Date.prototype.strftime) {
 				minutes = date.getMinutes();
 
 		if (date.isValid()) {
+			// note: destructively modifies `format`
 			return format.replace(/\%([aAbBcdHImMpSwyY])/g, function (key) {
 				switch(key[1]) {
+					// l10n abbreviated day name
 					case "a": return translation.shortDays[day];
+					// l10n full day name
 					case "A": return translation.days[day];
+					// l10n abbreviated month name
 					case "b": return translation.shortMonths[month];
+					// l10n full month name
 					case "B": return translation.months[month];
+					// l10n datetime
 					case "c": return date.toString();
+					// day of month, 1-31
 					case "d": return date.getDate().pad("0", 2);
+					// 24-hour, 00-23
 					case "H": return hours.pad("0", 2);
+					// 12-hour, 01-12
 					case "I":
 						if (0 === (hours + 12) % 12) {
 							return 12;
@@ -119,12 +128,19 @@ if (!Date.prototype.strftime) {
 							return (hours + 12) % 12;
 						}
 						break;
+					// month, 01-12
 					case "m": return (month + 1).pad("0", 2);
+					// minutes, 00-59
 					case "M": return minutes.pad("0", 2);
+					// l10n "am"/"pm"
 					case "p": return hours > 12 ? "PM" : "AM";
+					// seconds, 00-60
 					case "S": return date.getSeconds().pad("0", 2);
+					// day of week, 0-6
 					case "w": return day;
+					// last two digits of year, 00-99
 					case "y": return (date.getFullYear() % 100).pad("0", 2);
+					// year
 					case "Y": return date.getFullYear().toString();
 				}
 			});
