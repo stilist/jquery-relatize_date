@@ -104,7 +104,7 @@ if (!Date.prototype.strftime) {
 
 		if (date.isValid()) {
 			// note: destructively modifies `format`
-			return format.replace(/\%([aAbBcdHImMpSwyY])/g, function (key) {
+			return format.replace(/\%([aAbBcdeHImMpSwyY])/g, function (key) {
 				switch(key[1]) {
 					// l10n abbreviated day name
 					case "a": return translation.shortDays[day];
@@ -116,8 +116,10 @@ if (!Date.prototype.strftime) {
 					case "B": return translation.months[month];
 					// l10n datetime
 					case "c": return date.toString();
-					// day of month, 1-31
+					// day of month, 01-31 (leading zero)
 					case "d": return date.getDate().pad("0", 2);
+					// day of month,  1-31 (leading space)
+					case "e": return date.getDate().pad(" ", 2);
 					// 24-hour, 00-23
 					case "H": return hours.pad("0", 2);
 					// 12-hour, 01-12
