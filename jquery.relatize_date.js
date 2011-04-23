@@ -1,4 +1,3 @@
-// Almost all credit goes to Rick Olson.
 (function ($) {
 	$.fn.relatizeDate = function (options) {
 		// Options:
@@ -7,14 +6,14 @@
 		//      translation for the preferred locale
 		//   `fromTitle`: Boolean; whether to generate relative time from title of
 		//      `$(this)` or from its text (default)
-		//   `includeTime`: Boolean; whether to include time for dates 5+ days ago
+		//   `include_seconds`: `Boolean`
 		//   `language`: String; forcibly set which locale to use
 		//   `titleize`: Boolean; whether to set `title` attribute of `$(this)` to
 		//      original timestamp text in `$(this)`
 		var settings = $.extend({
 					defaultLanguage: "",
 					fromTitle: false,
-					includeTime: false,
+					include_seconds: false,
 					language: "",
 					titleize: false
 				}, options),
@@ -72,7 +71,8 @@
 				}
 
 				$(this).data("timestamp", $(this).text()).
-						text(date.timeAgoInWords(settings.includeTime, translation));
+						text(time_ago_in_words(date, settings.include_seconds,
+								translation));
 			}
 		});
 	};

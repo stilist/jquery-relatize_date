@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -8,41 +7,42 @@
     <script src="number.js"></script>
 
     <script src="jquery-1.4.2.min.js"></script>
-    <script src="jquery.relatize_date.ru.js"></script>
-    <script src="jquery.relatize_date.fr.js"></script>
     <script src="jquery.relatize_date.en.js"></script>
+    <script src="jquery.relatize_date.fr.js"></script>
     <script src="jquery.relatize_date.js"></script>
     <script type="text/javascript">
-        $(window).load(function () {
-          var langs = ['en', 'fr', 'ru'],
-          d = new Date(), c = 1,
-          dates = [
-            new Date(), 
-            new Date(d.setHours(d.getHours()-1)), 
-            new Date(d.setDate(d.getDate()-1)), 
-            "Wed Jun 15 2009 21:12:21 GMT+0400 (MSD)"
-          ];
+      $(window).load(function () {
+        var langs = ['en', 'fr'],
+            d = new Date(),
+            c = 1,
+            dates = [
+              new Date(), 
+              new Date(d.setHours(d.getHours()-1)),
+              new Date(d.setDate(d.getDate()-1)),
+              "Wed Jun 15 2009 21:12:21 GMT+0400 (MSD)"
+            ];
 
-          for(var timestamp in dates) {
-            for(var lang in langs) {
-              l = langs[lang], t = dates[timestamp];
-              $('body').
-                append('<div class="lang t'+(+timestamp+1)+
-                  '"><code>$("#time_'+c+'_'+l+
-                  '").relatizeDate({ language: "'+l+
-                  '" });</code><p><span>'+t+
-                  '</span> => <span id="time_'+c+'_'+l+'">'+t+
-                  '</span></p></div>');
-              $('#time_'+c+'_'+l).
-                relatizeDate({
-                  defaultLanguage: "en",
-                  language: l,
-                  titleize: true
-                });
-            }
-            c+=1;
+        for(var timestamp in dates) {
+          for(var lang in langs) {
+            l = langs[lang], t = dates[timestamp];
+            $('body').
+              append('<div class="lang t'+(+timestamp+1)+
+                '"><code>$("#time_'+c+'_'+l+
+                '").relatizeDate({ language: "'+l+
+                '" });</code><p><span>'+t+
+                '</span> => <span id="time_'+c+'_'+l+'">'+t+
+                '</span></p></div>');
+            $('#time_'+c+'_'+l).
+              relatizeDate({
+                defaultLanguage: "en",
+                language: l,
+                titleize: true,
+                include_seconds: true
+              });
           }
-        });
+          c+=1;
+        }
+      });
     </script>
     <style>
     h1 { font: 1.5em Helvetica, sans-serif; }

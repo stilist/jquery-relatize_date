@@ -1,3 +1,22 @@
+if (!Number.prototype.inRange) {
+	Number.prototype.inRange = function (start, end) {
+		var needle = this;
+
+		if (Number !== start.constructor || Number !== end.constructor ||
+				Number !== needle.constructor) {
+			throw new TypeError();
+		} else {
+			if (start === end) {
+				return needle === start;
+			} else if (start < end) {
+				return (start <= needle && needle <= end);
+			} else if (end < start) {
+				return (end <= needle && needle <= start);
+			}
+		}
+	}
+}
+
 // Takes Number, returns String. Never returns fewer characters than starting
 // count of decimal positions.
 //

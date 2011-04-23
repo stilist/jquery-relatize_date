@@ -1,88 +1,102 @@
 // Return the distance of time in words between two `Date`s, e.g.
-// "5 days ago", "менее минуты назад".
+// `"5 days ago"`, `"environ un an"`.
 //
 // Options:
-//   `end`: `Date`
-//   `includeTime`: `Boolean`; used if date is in the past 2-5 days
-//   `translation`: `Object`; relatizeDate translation
-if (!Date.prototype.distanceOfTimeInWords) {
-	Date.prototype.distanceOfTimeInWords =
-			function (end, includeTime, translation) {
-		var start = this,
-				minute = 60,
-				hour = minute * 60,
-				day = hour * 24,
-				n_days = 0,
-				n_hours = 0,
-				delta = 0,
-				date = "",
-				time = "",
-				format = "";
+//   `from_time`: `Date`
+//   `to_time`: `Date`
+//   `include_seconds`: `Boolean`
+//   `translation`: `Object`; a `$relatizeDateTranslation`
+var distance_of_time_in_words = function (from_time, to_time, include_seconds,
+				translation) {
+			var delta = 0,
+					distance_in_seconds = 0,
+					distance_in_minutes = 0,
+					distance_in_years = 0,
+					minute_offset_for_leap_year = 0,
+					remainder = 0,
+					distance = "";
 
-		if (Date !== start.constructor || Date !== end.constructor) {
-			throw new TypeError();
-		} else {
-			delta = parseInt(((end.getTime() - start.getTime()) / 1000), 10);
+			if (from_time.isValid() && to_time.isValid()) {
+				// from_time and to_time come in as millisecond offsets from Unix epoch
+				delta = Math.abs(to_time.unixTimestamp() - from_time.unixTimestamp());
 
-			// Less Than a Minute
-			if (minute > delta) {
-				date = translation.ltm;
-			// ABout n Minutes (1-2 minutes)
-			} else if ((minute * 2) > delta) {
-				date = translation.abm;
-			// 2-45 Minutes
-			} else if ((45 * minute) > delta) {
-				date = translation.m.replace("%d",
-						parseInt((delta / minute), 10));
-			// 1 Hour
-			} else if ((hour * 2) > delta) {
-				date = translation.h;
-			// ABout n Hours (2-23 hours)
-			} else if ((24 * hour) > delta) {
-				date = translation.abh.replace("%d", parseInt((delta / hour), 10));
-			// 1-2 days
-			} else if ((48 * hour) > delta) {
-				// 12-hour clock
-				if (12 === translation.default_time_fmt) {
-					n_hours = start.getHours() % 12;
+				distance_in_minutes = Math.round(delta / 60);
+				distance_in_seconds = Math.round(delta);
 
-					time = (0 === n_hours ? 12 : n_hours) + ":" +
-							start.getMinutes().pad("0", 2) + " " +
-							(start.getHours() > 12 ? "PM" : "AM");
-				// 24-hour clock
-				} else {
-					time = start.getHours() + ":" + start.getMinutes();
-				}
-
-				// yesterDay At
-				date = translation.d + " " + translation.at + " " + time;
-			} else {
-				n_days = parseInt((delta / day), 10).toString(10); // base 10
-
-				// 5+ days
-				if (5 < n_days) {
-					format = "%B %d, %Y";
-
-					if (includeTime) {
-						format += " " + translation.at + " %I:%M %p";
-					}
-
-					date = start.strftime(format, translation);
-				// 2-5 days
-				} else {
-					if ("undefined" !== typeof translation.shortds
-							&& "undefined" !== typeof translation.shortds[n_days - 2]) {
-						date = translation.shortds[n_days - 2];
+				if (distance_in_minutes.inRange(0, 1)) {
+					if (!include_seconds) {
+						return (0 === distance_in_minutes) ?
+								translation.less_than_x_minute :
+								translation.x_minutes.replace("%d", distance_in_minutes);
 					} else {
-						date = translation.ds.replace("%d", n_days);
+						if (distance_in_seconds.inRange(0, 4)) {
+							return translation.less_than_x_seconds.replace("%d", 5);
+						} else if (distance_in_seconds.inRange(5, 9)) {
+							return translation.less_than_x_seconds.replace("%d", 10);
+						} else if (distance_in_seconds.inRange(10, 19)) {
+							return translation.less_than_x_seconds.replace("%d", 20);
+						} else if (distance_in_seconds.inRange(20, 39)) {
+							return translation.half_a_minute;
+						} else if (distance_in_seconds.inRange(40, 59)) {
+							return translation.less_than_x_minute;
+						} else {
+							return translation.x_minute;
+						}
+					}
+				} else if (distance_in_minutes.inRange(2, 44)) {
+					return translation.x_minutes.replace("%d", distance_in_minutes);
+				} else if (distance_in_minutes.inRange(45, 89)) {
+					return translation.about_x_hour;
+				} else if (distance_in_minutes.inRange(90, 1439)) {
+					return translation.x_hours.replace("%d",
+							Math.round(distance_in_minutes.toFixed(1) / 60.0));
+				} else if (distance_in_minutes.inRange(1440, 2519)) {
+					return translation.x_day;
+				} else if (distance_in_minutes.inRange(2520, 43199)) {
+					return translation.x_days.replace("%d",
+							Math.round(distance_in_minutes.toFixed(1) / 1440.0));
+				} else if (distance_in_minutes.inRange(43200, 86399)) {
+					return translation.about_x_month;
+				} else if (distance_in_minutes.inRange(86400, 525599)) {
+					return translation.x_months.replace("%d",
+							Math.round(distance_in_minutes.toFixed(1) / 43200.0));
+				} else {
+					distance_in_years = Math.round(distance_in_minutes / 525600);
+					minute_offset_for_leap_year = (distance_in_years / 4) * 1440;
+					remainder = ((distance_in_minutes - minute_offset_for_leap_year) %
+							525600);
+
+					if (remainder < 131400) {
+						return translation.about_x_years.replace("%d",
+								distance_in_years);
+					} else if (remainder < 394200) {
+						return translation.over_x_years.replace("%d", distance_in_years);
+					} else {
+						return translation.almost_x_years.replace("%d",
+								(distance_in_years + 1));
 					}
 				}
 			}
+		},
 
-			return date;
-		}
-	};
-}
+		// Convenience method for calling `distance_of_time_in_words` relative to
+		// the current timestamp.
+		//
+		// Options:
+		//   `include_seconds`: `Boolean`
+		//   `translation`: `Object`; a `$relatizeDateTranslation`
+		time_ago_in_words = function (from_time, include_seconds, translation) {
+			var to_time = new Date();
+
+			if (from_time.isValid()) {
+				return distance_of_time_in_words(from_time, to_time, include_seconds,
+						translation);
+			}
+		},
+
+		distance_of_time_in_words_to_now = time_ago_in_words;
+
+/*****************************************************************************/
 
 if (!Date.prototype.isValid) {
 	Date.prototype.isValid = function() {
@@ -105,15 +119,15 @@ if (!Date.prototype.strftime) {
 		if (date.isValid()) {
 			// note: destructively modifies `format`
 			return format.replace(/\%([aAbBcdeHImMpSwyY])/g, function (key) {
-				switch(key[1]) {
+				switch (key[1]) {
 					// l10n abbreviated day name
-					case "a": return translation.shortDays[day];
+					case "a": return translation.abbr_day_names[day];
 					// l10n full day name
-					case "A": return translation.days[day];
+					case "A": return translation.day_names[day];
 					// l10n abbreviated month name
-					case "b": return translation.shortMonths[month];
+					case "b": return translation.abbr_month_names[month + 1];
 					// l10n full month name
-					case "B": return translation.months[month];
+					case "B": return translation.month_names[month + 1];
 					// l10n datetime
 					case "c": return date.toString();
 					// day of month, 01-31 (leading zero)
@@ -121,7 +135,7 @@ if (!Date.prototype.strftime) {
 					// day of month,  1-31 (leading space)
 					case "e": return date.getDate().pad(" ", 2);
 					// l10n abbreviated month name
-					case "h": return translation.shortMonths[month];
+					case "h": return translation.abbr_month_names[month + 1];
 					// 24-hour, 00-23
 					case "H": return hours.pad("0", 2);
 					// 12-hour, 01-12
@@ -150,22 +164,6 @@ if (!Date.prototype.strftime) {
 		} else {
 			// xxx not sure what the appropriate return value is here (/jordan)
 			return date;
-		}
-	};
-}
-
-// Convenience method for calling `distanceOfTimeInWords` relative to the
-// current timestamp.
-//
-// Options:
-//   `includeTime`: `Boolean`; used if date is in the past 2-5 days
-//   `translation`: `Object`; relatizeDate translation
-if (!Date.prototype.timeAgoInWords) {
-	Date.prototype.timeAgoInWords = function (includeTime, translation) {
-		if (Date !== this.constructor) {
-			throw new TypeError();
-		} else if (this.isValid()) {
-			return this.distanceOfTimeInWords(new Date(), includeTime, translation);
 		}
 	};
 }
